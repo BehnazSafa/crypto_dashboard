@@ -234,3 +234,24 @@ with tab2:
                                file_name=f"{coin_id}_historical.csv")
     else:
         st.warning("No historical data available for selected coins.")
+
+# جایی برای ذخیره‌ی لاگ‌ها
+if "logs" not in st.session_state:
+    st.session_state.logs = []
+
+def log_message(message):
+    """ساده‌ترین لاگر سفارشی"""
+    timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+    st.session_state.logs.append(f"[{timestamp}] {message}")
+
+# نمونه استفاده:
+try:
+    price = get_live_price("bitcoin")
+    log_message(f"Fetched BTC price: {price}")
+except Exception as e:
+    log_message(f"Error fetching BTC price: {e}")
+
+# نمایش لاگ‌ها
+with st.expander("🔎 Debug Logs"):
+    for log in st.session_state.logs:
+        st.text(log)
